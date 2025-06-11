@@ -96,6 +96,45 @@ input[type="email"] {
   font-size: 1rem;
 }
 
+#nextStop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tour-date-row {
+  position: relative;
+  margin: 10px 0;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.tour-date-row:hover {
+  color: #e63946;
+}
+
+.tour-countdown {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 120%;
+  transform: translateX(-50%);
+  background: #232323;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.98em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.tour-date-row:hover .tour-countdown {
+  display: block;
+}
+
 @media (max-width: 700px) {
   section {
     padding: 16px 4vw;
@@ -104,5 +143,15 @@ input[type="email"] {
   #team-features {
     flex-direction: column;
     gap: 16px;
+  }
+  #nextStop {
+    gap: 6px;
+  }
+  .tour-date-row {
+    font-size: 1em;
+  }
+  .tour-countdown {
+    font-size: 0.92em;
+    padding: 5px 8px;
   }
 }

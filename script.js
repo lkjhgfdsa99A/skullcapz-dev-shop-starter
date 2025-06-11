@@ -109,45 +109,34 @@ const songs = [
     const upcoming = tourDates.filter(t => t.date > now).sort((a, b) => a.date - b.date);
     const nextStopDiv = document.getElementById("nextStop");
     if (upcoming.length > 0) {
-      const next = upcoming[0];
-      nextStopDiv.innerHTML = `<strong>Next Concert:</strong> ${next.city} on ${next.date.toLocaleDateString()} at ${next.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-        <div id='mainCountdown' style='font-size:1.1em;margin:8px 0;'></div>`;
-      // Add smaller countdowns for the rest
-      if (upcoming.length > 1) {
-        nextStopDiv.innerHTML += `<div style='margin-top:10px;font-size:0.95em;color:#ccc;'>Upcoming:</div>`;
-        for (let i = 1; i < upcoming.length; i++) {
-          nextStopDiv.innerHTML += `<div class='mini-countdown' id='miniCountdown${i}' style='font-size:0.85em;color:#aaa;'></div>`;
-        }
-      }
-      updateConcertCountdowns(upcoming);
-      if (window.concertCountdownTimer) clearInterval(window.concertCountdownTimer);
-      window.concertCountdownTimer = setInterval(() => updateConcertCountdowns(upcoming), 1000);
+      nextStopDiv.innerHTML = upcoming.map((tour, idx) => `
+        <div class="tour-date-row" id="tourRow${idx}">
+          <span><strong>${tour.city}</strong> — ${tour.date.toLocaleDateString()} at ${tour.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+          <span class="tour-countdown" id="tourCountdown${idx}"></span>
+        </div>
+      `).join('');
+      updateAllTourCountdowns(upcoming);
+      if (window.tourCountdownTimer) clearInterval(window.tourCountdownTimer);
+      window.tourCountdownTimer = setInterval(() => updateAllTourCountdowns(upcoming), 1000);
     } else {
       nextStopDiv.innerHTML = "No upcoming concerts.";
     }
   }
 
-  function updateConcertCountdowns(upcoming) {
+  function updateAllTourCountdowns(upcoming) {
     const now = new Date();
-    // Main countdown for next concert
-    const next = upcoming[0];
-    const diff = next.date - now;
-    if (diff > 0) {
-      const {h, m, s, d} = getTimeParts(diff);
-      document.getElementById('mainCountdown').textContent = `⏰ ${d}d ${h}h ${m}m ${s}s until showtime`;
-    } else {
-      document.getElementById('mainCountdown').textContent = 'The concert is starting!';
-    }
-    // Mini countdowns for the rest
-    for (let i = 1; i < upcoming.length; i++) {
-      const diff2 = upcoming[i].date - now;
-      if (diff2 > 0) {
-        const {h, m, s, d} = getTimeParts(diff2);
-        document.getElementById(`miniCountdown${i}`).textContent = `${upcoming[i].city}: ${d}d ${h}h ${m}m ${s}s`;
-      } else {
-        document.getElementById(`miniCountdown${i}`).textContent = `${upcoming[i].city}: Starting!`;
+    upcoming.forEach((tour, idx) => {
+      const diff = tour.date - now;
+      const el = document.getElementById(`tourCountdown${idx}`);
+      if (el) {
+        if (diff > 0) {
+          const {h, m, s, d} = getTimeParts(diff);
+          el.textContent = `⏰ ${d}d ${h}h ${m}m ${s}s until showtime`;
+        } else {
+          el.textContent = 'The concert is starting!';
+        }
       }
-    }
+    });
   }
 
   function getTimeParts(ms) {
