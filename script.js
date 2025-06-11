@@ -109,12 +109,26 @@ const songs = [
     const upcoming = tourDates.filter(t => t.date > now).sort((a, b) => a.date - b.date);
     const nextStopDiv = document.getElementById("nextStop");
     if (upcoming.length > 0) {
-      nextStopDiv.innerHTML = upcoming.map((tour, idx) => `
-        <div class="tour-date-row" id="tourRow${idx}">
-          <span><strong>${tour.city}</strong> — ${tour.date.toLocaleDateString()} at ${tour.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-          <span class="tour-countdown" id="tourCountdown${idx}"></span>
-        </div>
-      `).join('');
+      // Main next concert (bigger text)
+      const main = upcoming[0];
+      nextStopDiv.innerHTML = `
+      <div class="tour-date-row main-tour-date" id="tourRow0">
+        <span><strong>Next Up:</strong> ${main.city} — ${main.date.toLocaleDateString()} at ${main.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+        <span class="tour-countdown" id="tourCountdown0"></span>
+      </div>
+      `;
+      // Smaller text for the rest
+      if (upcoming.length > 1) {
+        nextStopDiv.innerHTML += `<div style='margin-top:10px;font-size:0.95em;color:#ccc;'>Upcoming:</div>`;
+        for (let i = 1; i < upcoming.length; i++) {
+          nextStopDiv.innerHTML += `
+            <div class="tour-date-row mini-tour-date" id="tourRow${i}">
+              <span><strong>${upcoming[i].city}</strong> — ${upcoming[i].date.toLocaleDateString()} at ${upcoming[i].date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              <span class="tour-countdown" id="tourCountdown${i}"></span>
+            </div>
+          `;
+        }
+      }
       updateAllTourCountdowns(upcoming);
       if (window.tourCountdownTimer) clearInterval(window.tourCountdownTimer);
       window.tourCountdownTimer = setInterval(() => updateAllTourCountdowns(upcoming), 1000);
