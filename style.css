@@ -1,29 +1,65 @@
 body {
   font-family: 'Metal Mania', cursive;
-  background-color: black;
-  color: white;
+  background-color: #111;
+  color: #fff;
   text-align: center;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(90deg, #1f1f1f 0%, #e63946 100%);
+  padding: 32px 0 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 h1, h2 {
   color: #e63946;
+  margin-bottom: 0.5em;
 }
 
 section {
-  margin: 40px 0;
-  padding: 0 20px;
+  margin: 40px auto;
+  padding: 24px 32px;
+  background: #181818;
+  border-radius: 12px;
+  max-width: 600px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+#team-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+#team-features > div {
+  flex: 1 1 320px;
+  min-width: 280px;
+  max-width: 400px;
+  margin: 0 8px;
 }
 
 button {
   background-color: #e63946;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 18px;
   color: #fff;
   cursor: pointer;
   font-weight: bold;
   margin-top: 10px;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #b71c1c;
 }
 
 ul {
@@ -33,11 +69,12 @@ ul {
 }
 
 li {
-  background-color: #1f1f1f;
+  background-color: #232323;
   margin: 5px auto;
-  padding: 8px 12px;
+  padding: 10px 16px;
   width: fit-content;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 1.1rem;
 }
 
 .hidden {
@@ -47,4 +84,25 @@ li {
 #countdown {
   font-size: 1.2rem;
   margin-top: 10px;
+}
+
+input[type="email"] {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #181818;
+  color: #fff;
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+@media (max-width: 700px) {
+  section {
+    padding: 16px 4vw;
+    max-width: 98vw;
+  }
+  #team-features {
+    flex-direction: column;
+    gap: 16px;
+  }
 }
